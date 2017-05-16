@@ -1,0 +1,37 @@
+$project-popover-spacing-x: 8px;
+$project-popover-spacing-y: 6px;
+$project-popover-arrow-size: 6px;
+$project-popover-background: rgba(0, 0, 0, .4);
+$project-popover-color: #fff;
+
+.project {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: lime;
+  .project-popover {
+    position: absolute;
+    left: 100%;
+    top: -$project-popover-spacing-y;
+    margin-left: $project-popover-spacing-x;
+    padding: 6px;
+    background: $project-popover-background;
+    font-size: 13px;
+    color: $project-popover-color;
+    border-radius: 2px;
+    white-space: nowrap;
+    pointer-events: none;
+    &:before {
+      position: absolute;
+      content: '';
+      right: 100%;
+      top: $project-popover-spacing-y + $project-popover-arrow-size / 2;
+      width: 0;
+      height: 0;
+      border: $project-popover-arrow-size solid transparent;
+      border-right-color: $project-popover-background;
+    }
+  }
+}

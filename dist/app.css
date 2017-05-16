@@ -1,0 +1,176 @@
+.map {
+  user-select: none;
+  position: relative; }
+  .map .map-background {
+    display: block;
+    width: 100%; }
+
+.entity-manager {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden; }
+  .entity-manager:before {
+    z-index: 200;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s; }
+  .entity-manager.has-selection {
+    cursor: pointer; }
+    .entity-manager.has-selection:before {
+      opacity: 1; }
+
+.entity-manager-entities {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%; }
+  .entity-manager-entities .entity-wrapper {
+    position: absolute; }
+    .entity-manager-entities .entity-wrapper .entity {
+      z-index: 100;
+      position: absolute;
+      left: -50%;
+      top: -50%;
+      width: 100%;
+      height: 100%;
+      transition: box-shadow .3s; }
+      .entity-manager-entities .entity-wrapper .entity.selectable {
+        cursor: pointer; }
+      .entity-manager-entities .entity-wrapper .entity .entity-delete {
+        position: absolute;
+        left: -8px;
+        bottom: 100%;
+        background: #f00;
+        margin-bottom: 8px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        border-radius: 40px;
+        color: #fff;
+        opacity: 0;
+        transition: opacity .3s;
+        cursor: pointer; }
+    .entity-manager-entities .entity-wrapper.selected .entity {
+      z-index: 300;
+      box-shadow: 0 0 0 1px #fff, 0 0 0 3px #ff5138, 0 0 5px #f00;
+      border-radius: 1px;
+      cursor: move; }
+      .entity-manager-entities .entity-wrapper.selected .entity .entity-delete {
+        opacity: 1; }
+  .entity-manager-entities .project {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: lime; }
+    .entity-manager-entities .project .project-popover {
+      position: absolute;
+      left: 100%;
+      top: -6px;
+      margin-left: 8px;
+      padding: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      font-size: 13px;
+      color: #fff;
+      border-radius: 2px;
+      white-space: nowrap;
+      pointer-events: none; }
+      .entity-manager-entities .project .project-popover:before {
+        position: absolute;
+        content: '';
+        right: 100%;
+        top: 9px;
+        width: 0;
+        height: 0;
+        border: 6px solid transparent;
+        border-right-color: rgba(0, 0, 0, 0.4); }
+  .entity-manager-entities .room {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2); }
+    .entity-manager-entities .room .room-title {
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      color: #fff; }
+  .entity-manager-entities .rectangle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #fcc2ff;
+    box-shadow: inset 0 0 2px #000;
+    border-radius: 2px; }
+
+.entity-manager-available-entities {
+  z-index: 100;
+  position: absolute;
+  left: -230px;
+  top: 0;
+  bottom: 0;
+  width: 230px;
+  background: #e6e3e3;
+  transition: left .3s; }
+  .entity-manager-available-entities.active {
+    left: 0; }
+  .entity-manager-available-entities .entity-manager-available-entities-toggle {
+    position: absolute;
+    left: 100%;
+    top: 20px;
+    width: 32px;
+    height: 32px;
+    line-height: 26px;
+    font-size: 34px;
+    text-align: center;
+    border-radius: 0 5px 5px 0;
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer; }
+  .entity-manager-available-entities .entity-manager-available-entities-inner {
+    max-height: 100%;
+    overflow-y: scroll; }
+    .entity-manager-available-entities .entity-manager-available-entities-inner .entity-wrapper {
+      left: auto !important;
+      top: auto !important;
+      width: auto !important;
+      height: auto !important;
+      transform: none !important;
+      background: #fff;
+      border-bottom: 1px solid #fff;
+      cursor: pointer;
+      padding: 4px;
+      margin: 4px; }
+      .entity-manager-available-entities .entity-manager-available-entities-inner .entity-wrapper.selected {
+        box-shadow: 0 0 0 1px #fff, 0 0 0 3px #ff5138, 0 0 5px #f00; }
+      .entity-manager-available-entities .entity-manager-available-entities-inner .entity-wrapper .entity .entity-delete {
+        display: none; }
+
+.entity-manager-controls {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 100; }
+
+body {
+  background: #f1f1f1;
+  padding: 40px; }
+
+.frame {
+  max-width: 800px;
+  margin: auto;
+  border: 1px solid #000; }

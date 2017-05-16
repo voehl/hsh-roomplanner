@@ -1,0 +1,14 @@
+.room {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .2);
+  .room-title {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    color: #fff;
+  }
+}
