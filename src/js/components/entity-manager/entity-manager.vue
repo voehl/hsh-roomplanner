@@ -1,32 +1,39 @@
 <template>
-	<div :class="entityManagerClass" @click="handleEntityManagerClick($event)">
-		<div class="entity-manager-controls">
-			<button @click="sendData">Save</button>
-		</div>
-		<div :class="entityManagerAvailableEntitiesClass">
-			<div class="entity-manager-available-entities-toggle" @click="toggle();">&rsaquo;</div>
-			<div class="entity-manager-available-entities-inner">
+	<div>
+		<div :class="entityManagerClass" @click="handleEntityManagerClick($event)">
+			<div class="entity-manager-controls">
+				<button @click="sendData" class="btn save-button">Speichern</button>
+			</div>
+			<div :class="entityManagerAvailableEntitiesClass">
+				<div class="entity-manager-available-entities-inner">
+					<entity
+							:model="entity"
+							:key="entity.id"
+							:selected="isSelected(entity)"
+							@click="handleEntityClick($event, entity)"
+							@move="handleEntityInitialMove($event, entity)"
+							v-for="entity in entities"
+							v-if="!(entity.x > 0 || entity.y > 0)"></entity>
+				</div>
+			</div>
+			<div class="entity-manager-entities">
 				<entity
 						:model="entity"
 						:key="entity.id"
 						:selected="isSelected(entity)"
 						@click="handleEntityClick($event, entity)"
-						@move="handleEntityInitialMove($event, entity)"
+						@move="handleEntityMove($event, entity)"
+						@rotate="handleEntityRotate($event, entity)"
+						@delete="handleEntityDelete($event, entity)"
 						v-for="entity in entities"
-						v-if="!(entity.x > 0 || entity.y > 0)"></entity>
+						v-if="entity.x > 0 || entity.y > 0"></entity>
 			</div>
-		</div>
-		<div class="entity-manager-entities">
-			<entity
-					:model="entity"
-					:key="entity.id"
-					:selected="isSelected(entity)"
-					@click="handleEntityClick($event, entity)"
-					@move="handleEntityMove($event, entity)"
-					@rotate="handleEntityRotate($event, entity)"
-					@delete="handleEntityDelete($event, entity)"
-					v-for="entity in entities"
-					v-if="entity.x > 0 || entity.y > 0"></entity>
+			<div class="legende">
+				<div class="vote-group" v-for="voteGroup in voteGroups">
+					<div class="vote-group-color" v-bind:style="{backgroundColor:voteGroup.color}"></div>
+					<div class="vote-group-name">{{ voteGroup.name }}</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -40,7 +47,7 @@
 			return {
 				entities: [],
 				selection: [],
-				expanded: true
+				expanded: false
 			};
 		},
 		computed: {
@@ -49,6 +56,17 @@
 			},
 			entityManagerAvailableEntitiesClass: function () {
 				return {'entity-manager-available-entities': true, 'active': this.expanded};
+			},
+			voteGroups: function () {
+				var _voteGroups = {};
+				this.entities.forEach(function (entity) {
+					_voteGroups[entity.voteGroupName] = {name: entity.voteGroupName, color: entity.voteGroupColor};
+				});
+				var voteGroups = [];
+				for (var k in _voteGroups) {
+					voteGroups.push(_voteGroups[k]);
+				}
+				return voteGroups;
 			}
 		},
 		methods: {
@@ -67,12 +85,15 @@
 							type: entity.type,
 							x: entity.x,
 							y: entity.y,
-							angle: entity.angle
+							angle: entity.angle,
+							voteGroupName: entity.voteGroupName || '',
+//							customRequirements: '',
+							roomRequirements: entity.roomRequirements || ''
 						});
 				});
 //				console.log(JSON.stringify(data, null, 4));
 				this.$http.post(this.url, JSON.stringify(data)).then(function (response) {
-					console.log(response);
+					alert('Gespeichert!');
 				});
 
 			},

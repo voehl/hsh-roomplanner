@@ -11003,6 +11003,13 @@
 	//
 	//
 	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 
 		module.exports = {
 			props: {
@@ -11012,7 +11019,7 @@
 				return {
 					entities: [],
 					selection: [],
-					expanded: true
+					expanded: false
 				};
 			},
 			computed: {
@@ -11021,6 +11028,17 @@
 				},
 				entityManagerAvailableEntitiesClass: function () {
 					return {'entity-manager-available-entities': true, 'active': this.expanded};
+				},
+				voteGroups: function () {
+					var _voteGroups = {};
+					this.entities.forEach(function (entity) {
+						_voteGroups[entity.voteGroupName] = {name: entity.voteGroupName, color: entity.voteGroupColor};
+					});
+					var voteGroups = [];
+					for (var k in _voteGroups) {
+						voteGroups.push(_voteGroups[k]);
+					}
+					return voteGroups;
 				}
 			},
 			methods: {
@@ -11039,12 +11057,15 @@
 								type: entity.type,
 								x: entity.x,
 								y: entity.y,
-								angle: entity.angle
+								angle: entity.angle,
+								voteGroupName: entity.voteGroupName || '',
+	//							customRequirements: '',
+								roomRequirements: entity.roomRequirements || ''
 							});
 					});
 	//				console.log(JSON.stringify(data, null, 4));
 					this.$http.post(this.url, JSON.stringify(data)).then(function (response) {
-						console.log(response);
+						alert('Gespeichert!');
 					});
 
 				},
@@ -11091,7 +11112,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', {
+	  return _c('div', [_c('div', {
 	    class: _vm.entityManagerClass,
 	    on: {
 	      "click": function($event) {
@@ -11101,19 +11122,13 @@
 	  }, [_c('div', {
 	    staticClass: "entity-manager-controls"
 	  }, [_c('button', {
+	    staticClass: "btn save-button",
 	    on: {
 	      "click": _vm.sendData
 	    }
-	  }, [_vm._v("Save")])]), _vm._v(" "), _c('div', {
+	  }, [_vm._v("Speichern")])]), _vm._v(" "), _c('div', {
 	    class: _vm.entityManagerAvailableEntitiesClass
 	  }, [_c('div', {
-	    staticClass: "entity-manager-available-entities-toggle",
-	    on: {
-	      "click": function($event) {
-	        _vm.toggle();
-	      }
-	    }
-	  }, [_vm._v("›")]), _vm._v(" "), _c('div', {
 	    staticClass: "entity-manager-available-entities-inner"
 	  }, _vm._l((_vm.entities), function(entity) {
 	    return (!(entity.x > 0 || entity.y > 0)) ? _c('entity', {
@@ -11155,7 +11170,20 @@
 	        }
 	      }
 	    }) : _vm._e()
-	  }))])
+	  })), _vm._v(" "), _c('div', {
+	    staticClass: "legende"
+	  }, _vm._l((_vm.voteGroups), function(voteGroup) {
+	    return _c('div', {
+	      staticClass: "vote-group"
+	    }, [_c('div', {
+	      staticClass: "vote-group-color",
+	      style: ({
+	        backgroundColor: voteGroup.color
+	      })
+	    }), _vm._v(" "), _c('div', {
+	      staticClass: "vote-group-name"
+	    }, [_vm._v(_vm._s(voteGroup.name))])])
+	  }))])])
 	},staticRenderFns: []}
 	module.exports.render._withStripped = true
 	if (false) {
@@ -11366,6 +11394,8 @@
 	//
 	//
 	//
+	//
+	//
 
 	module.exports = {
 		props: {
@@ -11385,7 +11415,14 @@
 	    staticClass: "project-popover"
 	  }, [_c('div', {
 	    staticClass: "project-title"
-	  }, [_vm._v(_vm._s(_vm.model.name))])])])
+	  }, [_vm._v(_vm._s(_vm.model.name))]), _vm._v(" "), _c('div', {
+	    staticClass: "project-requirements"
+	  }, [_vm._v(_vm._s(_vm.model.roomRequirements))])]), _vm._v(" "), _c('div', {
+	    staticClass: "project-color",
+	    style: ({
+	      backgroundColor: _vm.model.voteGroupColor
+	    })
+	  })])
 	},staticRenderFns: []}
 	module.exports.render._withStripped = true
 	if (false) {
@@ -11611,7 +11648,8 @@
 				});
 			}
 
-			const container = node.context.$parent.$el;
+			const container = node.context.$parent.$el.querySelector('.entity-manager');
+			console.log(container);
 			var offsetX = 0, offsetY = 0;
 
 			el.draggable = true;
@@ -11684,7 +11722,7 @@
 				node.context.$emit(eventName, {angle: snapValue(lastAngle, snapStep)});
 			}
 
-			const container = node.context.$parent.$el;
+			const container = node.context.$parent.$el.querySelector('.entity-manager');
 			var lastX, lastY;
 			var mouseDown = false, shiftDown = false;
 			var snapStep = 45 / 2;

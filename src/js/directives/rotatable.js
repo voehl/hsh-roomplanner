@@ -24,7 +24,7 @@ module.exports = {
 			node.context.$emit(eventName, {angle: snapValue(lastAngle, snapStep)});
 		}
 
-		const container = node.context.$parent.$el;
+		const container = node.context.$parent.$el.querySelector('.entity-manager');
 		var lastX, lastY;
 		var mouseDown = false, shiftDown = false;
 		var snapStep = 45 / 2;

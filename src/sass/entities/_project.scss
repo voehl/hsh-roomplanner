@@ -10,7 +10,7 @@ $project-popover-color: #fff;
   top: 0;
   right: 0;
   bottom: 0;
-  background: lime;
+  background: #667469;
   .project-popover {
     position: absolute;
     left: 100%;
@@ -32,6 +32,21 @@ $project-popover-color: #fff;
       height: 0;
       border: $project-popover-arrow-size solid transparent;
       border-right-color: $project-popover-background;
+    }
+    .project-requirements {
+      max-width: 200px;
+      white-space: normal;
+      display: none;
+    }
+  }
+}
+
+.entity-wrapper.selected {
+  .project {
+    .project-popover {
+      .project-requirements {
+        display: block;
+      }
     }
   }
 }

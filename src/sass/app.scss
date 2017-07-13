@@ -1,7 +1,16 @@
 @import "map";
 @import "entity-manager";
+@import "legende";
 
 $width: 230px;
+
+.project-color {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+}
 
 .entity-manager-entities {
   position: absolute;
@@ -18,12 +27,13 @@ $width: 230px;
 .entity-manager-available-entities {
   z-index: 100;
   position: absolute;
-  left: -$width;
-  top: 0;
-  bottom: 0;
+  left: -$width - 1px;
+  top: -1px;
+  bottom: -1px;
   width: $width;
   background: #e6e3e3;
   transition: left .3s;
+  border: 1px solid #000;
   &.active {
     left: 0;
   }
@@ -52,7 +62,7 @@ $width: 230px;
       background: #fff;
       border-bottom: 1px solid #fff;
       cursor: pointer;
-      padding: 4px;
+      padding: 4px 4px 4px 10px;
       margin: 4px;
       &.selected {
         box-shadow: 0 0 0 1px #fff, 0 0 0 3px #ff5138, 0 0 5px #f00;
@@ -64,22 +74,53 @@ $width: 230px;
       }
     }
   }
+  .project {
+    .project-popover {
+      .project-requirements {
+        display: none;
+      }
+    }
+  }
+  .project-color {
+    left: -10px;
+    top: -4px;
+    bottom: -4px;
+  }
 }
 
 .entity-manager-controls {
   position: absolute;
   right: 0;
-  top: 0;
+  top: 100%;
   z-index: 100;
-}
-
-body {
-  background: #f1f1f1;
-  padding: 40px;
+  padding: 10px 0;
 }
 
 .frame {
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
   border: 1px solid #000;
+  padding-left: 230px;
+}
+
+.save-button {
+  padding: 6px 9px;
+}
+
+@media print {
+  .frame {
+    padding: 0;
+  }
+  .entity-manager-available-entities {
+    display: none;
+  }
+  .side-nav, .navbar-fixed, .save-button {
+    display: none;
+  }
+  .dpDashboardContainer {
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    width: auto !important
+  }
 }

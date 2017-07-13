@@ -8,7 +8,8 @@ module.exports = {
 			});
 		}
 
-		const container = node.context.$parent.$el;
+		const container = node.context.$parent.$el.querySelector('.entity-manager');
+		console.log(container);
 		var offsetX = 0, offsetY = 0;
 
 		el.draggable = true;
